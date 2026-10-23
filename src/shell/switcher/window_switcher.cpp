@@ -530,6 +530,10 @@ namespace {
       }
       WindowSwitcherCandidate candidate;
       candidate.entry = makeEntryFromToplevel(platform, iconResolver, iconSize, info.appId, info);
+      // wlr toplevels carry no ext handle; join them by app id and title like assignment entries.
+      if (candidate.entry.captureHandle == 0) {
+        candidate.entry.captureHandle = resolveCaptureHandle(wayland, info.appId, info.title);
+      }
       candidate.toplevelOrder = info.order;
       addCandidate(std::move(candidate), key);
     }
